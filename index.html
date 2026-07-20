@@ -3,211 +3,576 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NUSANTARA: Takhta & Pusaka - Prototaip</title>
+    <title>NUSANTARA: Takhta & Pusaka - Prototaip Lengkap</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #1a1a2e; color: #eee; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        h1 { margin-bottom: 10px; color: #f5c842; text-shadow: 2px 2px 4px #000; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, sans-serif; 
+            background: #1a1a2e; 
+            color: #eee; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 20px; 
+        }
+        h1 { margin-bottom: 6px; color: #f5c842; text-shadow: 2px 2px 4px #000; }
+        .subtitle { margin-bottom: 14px; font-style: italic; color: #aaa; font-size: 14px; }
         #container { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
-        #mapCanvas { border: 2px solid #6a4e2e; border-radius: 12px; background: #2d4a3b; cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,0.7); }
-        #sidebar { background: #16213e; padding: 20px; border-radius: 12px; width: 260px; border: 1px solid #3a5a7a; }
-        #sidebar h3 { border-bottom: 1px solid #3a5a7a; padding-bottom: 8px; margin-bottom: 12px; }
-        .control-group { margin-bottom: 18px; }
+        #mapCanvas { 
+            border: 2px solid #6a4e2e; 
+            border-radius: 12px; 
+            background: #1a5276; 
+            cursor: pointer; 
+            box-shadow: 0 8px 24px rgba(0,0,0,0.7); 
+        }
+        #sidebar { 
+            background: #16213e; 
+            padding: 20px; 
+            border-radius: 12px; 
+            width: 280px; 
+            border: 1px solid #3a5a7a; 
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        #sidebar h3 { border-bottom: 1px solid #3a5a7a; padding-bottom: 8px; }
+        .control-group { }
         .control-group label { display: block; font-weight: bold; margin-bottom: 4px; font-size: 14px; color: #b0c4de; }
         #yearSlider { width: 100%; accent-color: #f5c842; }
         #yearDisplay { font-size: 24px; font-weight: bold; color: #f5c842; text-align: center; }
-        #infoBox { background: #0f3460; padding: 12px; border-radius: 8px; min-height: 80px; font-size: 14px; line-height: 1.6; }
-        .btn { background: #f5c842; color: #1a1a2e; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 8px; transition: 0.2s; }
+        #infoBox { 
+            background: #0f3460; 
+            padding: 12px; 
+            border-radius: 8px; 
+            min-height: 80px; 
+            font-size: 14px; 
+            line-height: 1.6; 
+        }
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn { 
+            background: #f5c842; 
+            color: #1a1a2e; 
+            border: none; 
+            padding: 8px 14px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            flex: 1;
+        }
         .btn:hover { background: #e0b030; transform: scale(1.02); }
         .btn.secondary { background: #3a5a7a; color: white; }
         .btn.secondary:hover { background: #4a6a8a; }
-        #modeIndicator { background: #2a2a4a; padding: 6px 12px; border-radius: 20px; font-size: 12px; display: inline-block; margin-top: 8px; }
-        #provinceList { max-height: 150px; overflow-y: auto; font-size: 13px; margin-top: 8px; background: #0a0a1a; padding: 8px; border-radius: 6px; }
-        #provinceList span { display: inline-block; background: #2a3a5a; padding: 2px 10px; border-radius: 12px; margin: 3px; }
+        .btn.danger { background: #c0392b; color: white; }
+        .btn.danger:hover { background: #e74c3c; }
+        #modeIndicator { 
+            background: #2a2a4a; 
+            padding: 4px 12px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            display: inline-block; 
+            margin-top: 4px; 
+        }
+        #provinceList { 
+            max-height: 100px; 
+            overflow-y: auto; 
+            font-size: 13px; 
+            margin-top: 6px; 
+            background: #0a0a1a; 
+            padding: 8px; 
+            border-radius: 6px; 
+        }
+        #provinceList span { 
+            display: inline-block; 
+            background: #2a3a5a; 
+            padding: 2px 10px; 
+            border-radius: 12px; 
+            margin: 3px; 
+        }
+        #createStatus { font-size: 13px; color: #f5c842; margin-top: 4px; }
         .highlight { border: 2px solid #f5c842; }
+        .footer { margin-top: 20px; font-size: 12px; color: #666; }
     </style>
 </head>
 <body>
 
 <h1>🌏 NUSANTARA: Takhta & Pusaka</h1>
-<p style="margin-bottom:14px; font-style:italic; color:#aaa;">Prototaip — Pilih tahun & wilayah (1211–1300)</p>
+<p class="subtitle">Prototaip Lengkap — Pilih tahun, pilih wilayah, dan cipta kerajaan sendiri (1211–1300)</p>
 
 <div id="container">
     <!-- Peta -->
-    <canvas id="mapCanvas" width="700" height="550"></canvas>
+    <canvas id="mapCanvas" width="720" height="560"></canvas>
 
     <!-- Panel Kawalan -->
     <div id="sidebar">
         <h3>⚙️ Kawalan</h3>
+        
+        <!-- Gelangsar Tahun -->
         <div class="control-group">
             <label for="yearSlider">📅 Tahun: <span id="yearDisplay">1211</span></label>
             <input type="range" id="yearSlider" min="1211" max="1300" value="1211" step="1">
         </div>
 
+        <!-- Mod -->
         <div class="control-group">
             <label>🎮 Mod</label>
-            <button id="btnView" class="btn secondary">Lihat Peta</button>
-            <button id="btnCreate" class="btn">Cipta Kerajaan</button>
-            <span id="modeIndicator">Mod: Lihat</span>
+            <div class="btn-group">
+                <button id="btnView" class="btn">Lihat Peta</button>
+                <button id="btnCreate" class="btn secondary">Cipta Kerajaan</button>
+            </div>
+            <span id="modeIndicator">Mod: Lihat Peta</span>
         </div>
 
+        <!-- Maklumat Wilayah -->
         <div class="control-group">
-            <label>📋 Maklumat</label>
+            <label>📋 Maklumat Wilayah</label>
             <div id="infoBox">
                 <p><strong>Wilayah:</strong> <span id="provName">-</span></p>
                 <p><strong>Pemilik:</strong> <span id="ownerName">-</span></p>
                 <p><strong>Budaya:</strong> <span id="cultureName">-</span></p>
+                <p><strong>Status:</strong> <span id="provStatus">Biasa</span></p>
             </div>
         </div>
 
+        <!-- Wilayah Dipilih (untuk ciptaan) -->
         <div class="control-group">
-            <label>🗺️ Wilayah Dipilih (ciptaan)</label>
+            <label>🗺️ Wilayah Dipilih (<span id="selectedCount">0</span>/8)</label>
             <div id="provinceList">Tiada</div>
-            <button id="btnClearSelection" class="btn secondary" style="margin-top:6px;">Kosongkan</button>
+            <div style="display: flex; gap: 6px; margin-top: 6px;">
+                <button id="btnClearSelection" class="btn secondary" style="flex:1;">Kosongkan</button>
+                <button id="btnConfirmCreate" class="btn" style="flex:1;">✨ Sahkan Ciptaan</button>
+            </div>
+            <div id="createStatus"></div>
         </div>
     </div>
 </div>
 
+<div class="footer">💡 Petua: Klik wilayah untuk maklumat. Dalam mod 'Cipta', klik untuk pilih wilayah. Maksimum 8 wilayah.</div>
+
 <script>
 // ============================================================
-// 1. DATA PROVINSI & KERAJAAN (versi ringkas untuk prototaip)
+// 1. DATA DIPERLUS (EXPANDED) – 16 wilayah + 10 kerajaan
 // ============================================================
-const PROVINCE_DATA = [
-    { id: 'melaka', name: 'Melaka', x: 420, y: 320, culture: 'Melayu' },
-    { id: 'negeri_sembilan', name: 'Negeri Sembilan', x: 470, y: 340, culture: 'Melayu' },
-    { id: 'johor', name: 'Johor', x: 540, y: 370, culture: 'Melayu' },
-    { id: 'pahang', name: 'Pahang', x: 550, y: 290, culture: 'Melayu' },
-    { id: 'perak', name: 'Perak', x: 400, y: 260, culture: 'Melayu' },
-    { id: 'kedah', name: 'Kedah', x: 350, y: 200, culture: 'Melayu' },
-    { id: 'patani', name: 'Patani', x: 500, y: 200, culture: 'Melayu' },
-    { id: 'aceh', name: 'Aceh', x: 150, y: 130, culture: 'Melayu' },
-    { id: 'sumatera_utara', name: 'Sumatera Utara', x: 200, y: 250, culture: 'Batak' },
-    { id: 'jambi', name: 'Jambi', x: 250, y: 340, culture: 'Melayu' },
-    { id: 'palembang', name: 'Palembang', x: 300, y: 400, culture: 'Melayu' },
-    { id: 'singapura', name: 'Singapura', x: 580, y: 400, culture: 'Melayu' }
+const EXPANDED_PROVINCE_DATA = [
+    // Semenanjung
+    { id: 'melaka', name: 'Melaka', x: 430, y: 330, culture: 'Melayu' },
+    { id: 'negeri_sembilan', name: 'Negeri Sembilan', x: 480, y: 350, culture: 'Melayu' },
+    { id: 'johor', name: 'Johor', x: 550, y: 380, culture: 'Melayu' },
+    { id: 'pahang', name: 'Pahang', x: 560, y: 300, culture: 'Melayu' },
+    { id: 'perak', name: 'Perak', x: 410, y: 270, culture: 'Melayu' },
+    { id: 'kedah', name: 'Kedah', x: 360, y: 210, culture: 'Melayu' },
+    { id: 'patani', name: 'Patani', x: 510, y: 210, culture: 'Melayu' },
+    { id: 'kelantan', name: 'Kelantan', x: 530, y: 240, culture: 'Melayu' },
+    { id: 'terengganu', name: 'Terengganu', x: 570, y: 260, culture: 'Melayu' },
+    // Sumatera
+    { id: 'aceh', name: 'Aceh', x: 160, y: 140, culture: 'Aceh' },
+    { id: 'sumatera_utara', name: 'Sumatera Utara', x: 210, y: 260, culture: 'Batak' },
+    { id: 'jambi', name: 'Jambi', x: 260, y: 350, culture: 'Melayu' },
+    { id: 'palembang', name: 'Palembang', x: 310, y: 410, culture: 'Melayu' },
+    { id: 'lampung', name: 'Lampung', x: 340, y: 470, culture: 'Melayu' },
+    { id: 'bengkulu', name: 'Bengkulu', x: 250, y: 460, culture: 'Rejang' },
+    { id: 'riau', name: 'Riau', x: 350, y: 290, culture: 'Melayu' },
+    { id: 'singapura', name: 'Singapura', x: 590, y: 410, culture: 'Melayu' }
 ];
 
-// Data kerajaan: tahun muncul & luput (untuk 1211-1300)
-const KINGDOM_DATA = [
-    { id: 'sriwijaya', name: 'Sriwijaya', color: '#8B4513', appear: 600, disappear: 1400, provinces: ['palembang', 'jambi'] },
-    { id: 'melayu_jambi', name: 'Melayu Jambi', color: '#DAA520', appear: 1100, disappear: 1400, provinces: ['jambi'] },
-    { id: 'kedah_tua', name: 'Kedah Tua', color: '#2E8B57', appear: 800, disappear: 1400, provinces: ['kedah'] },
-    { id: 'pagan', name: 'Pagan (Bagan)', color: '#B22222', appear: 1044, disappear: 1287, provinces: [] }, // luar skop
-    { id: 'khmer', name: 'Kerajaan Khmer', color: '#FF8C00', appear: 802, disappear: 1431, provinces: [] }
+const EXPANDED_KINGDOM_DATA = [
+    {
+        id: 'sriwijaya',
+        name: 'Sriwijaya',
+        color: '#8B4513',
+        appear: 600,
+        disappear: 1400,
+        culture: 'Melayu Kuno',
+        claims: [
+            { provinceId: 'palembang', type: 'core' },
+            { provinceId: 'jambi', type: 'core' },
+            { provinceId: 'lampung', type: 'tributary' },
+            { provinceId: 'riau', type: 'tributary' }
+        ]
+    },
+    {
+        id: 'melayu_jambi',
+        name: 'Kerajaan Melayu (Jambi)',
+        color: '#DAA520',
+        appear: 1100,
+        disappear: 1400,
+        culture: 'Melayu',
+        claims: [
+            { provinceId: 'jambi', type: 'core' },
+            { provinceId: 'riau', type: 'claim' }
+        ]
+    },
+    {
+        id: 'kedah_tua',
+        name: 'Kedah Tua',
+        color: '#2E8B57',
+        appear: 800,
+        disappear: 1400,
+        culture: 'Melayu',
+        claims: [
+            { provinceId: 'kedah', type: 'core' },
+            { provinceId: 'perak', type: 'claim' }
+        ]
+    },
+    {
+        id: 'pagan',
+        name: 'Empayar Pagan (Bagan)',
+        color: '#B22222',
+        appear: 1044,
+        disappear: 1287,
+        culture: 'Burma',
+        claims: []
+    },
+    {
+        id: 'khmer',
+        name: 'Kerajaan Khmer (Angkor)',
+        color: '#FF8C00',
+        appear: 802,
+        disappear: 1431,
+        culture: 'Khmer',
+        claims: []
+    },
+    {
+        id: 'singhasari',
+        name: 'Singhasari',
+        color: '#C71585',
+        appear: 1222,
+        disappear: 1292,
+        culture: 'Jawa',
+        claims: []
+    },
+    {
+        id: 'melaka_sultanate',
+        name: 'Kesultanan Melaka',
+        color: '#F4A460',
+        appear: 1402,
+        disappear: 1511,
+        culture: 'Melayu',
+        claims: [
+            { provinceId: 'melaka', type: 'core' },
+            { provinceId: 'negeri_sembilan', type: 'core' },
+            { provinceId: 'johor', type: 'tributary' },
+            { provinceId: 'pahang', type: 'tributary' },
+            { provinceId: 'perak', type: 'tributary' },
+            { provinceId: 'kedah', type: 'tributary' },
+            { provinceId: 'patani', type: 'tributary' },
+            { provinceId: 'riau', type: 'tributary' }
+        ]
+    },
+    {
+        id: 'johor_sultanate',
+        name: 'Kesultanan Johor',
+        color: '#1E90FF',
+        appear: 1528,
+        disappear: 1947,
+        culture: 'Melayu',
+        claims: [
+            { provinceId: 'johor', type: 'core' },
+            { provinceId: 'singapura', type: 'core' },
+            { provinceId: 'riau', type: 'core' },
+            { provinceId: 'pahang', type: 'claim' }
+        ]
+    },
+    {
+        id: 'perak_sultanate',
+        name: 'Kesultanan Perak',
+        color: '#32CD32',
+        appear: 1528,
+        disappear: 1947,
+        culture: 'Melayu',
+        claims: [
+            { provinceId: 'perak', type: 'core' },
+            { provinceId: 'kedah', type: 'claim' }
+        ]
+    },
+    {
+        id: 'pahang_sultanate',
+        name: 'Kesultanan Pahang',
+        color: '#FFD700',
+        appear: 1470,
+        disappear: 1947,
+        culture: 'Melayu',
+        claims: [
+            { provinceId: 'pahang', type: 'core' },
+            { provinceId: 'kelantan', type: 'claim' }
+        ]
+    },
+    {
+        id: 'patani_sultanate',
+        name: 'Kesultanan Patani',
+        color: '#FF69B4',
+        appear: 1457,
+        disappear: 1902,
+        culture: 'Melayu',
+        claims: [
+            { provinceId: 'patani', type: 'core' },
+            { provinceId: 'kelantan', type: 'tributary' },
+            { provinceId: 'terengganu', type: 'tributary' }
+        ]
+    }
 ];
 
-// Status pemilikan mengikut tahun (fungsi ringkas)
-function getOwnerForYear(provinceId, year) {
-    // Prototaip: hanya beberapa peraturan mudah
-    if (provinceId === 'palembang' || provinceId === 'jambi') {
-        if (year < 1400) return 'sriwijaya';
-        return 'bebas';
+// ============================================================
+// 2. ENJIN MASA (TimeMachine)
+// ============================================================
+class TimeMachine {
+    constructor(kingdomData, provinceData) {
+        this.kingdoms = kingdomData;
+        this.provinces = provinceData;
+        this.provinceIndex = {};
+        this.provinces.forEach(p => this.provinceIndex[p.id] = p);
     }
-    if (provinceId === 'kedah') {
-        if (year < 1400) return 'kedah_tua';
-        return 'bebas';
+
+    getOwner(provinceId, year) {
+        const prov = this.provinceIndex[provinceId];
+        if (!prov) return null;
+
+        let owner = null;
+        let highestPriority = -1;
+
+        for (const k of this.kingdoms) {
+            if (year < k.appear || year > k.disappear) continue;
+            const claim = k.claims?.find(c => c.provinceId === provinceId);
+            if (claim) {
+                const priority = { 'core': 3, 'tributary': 2, 'claim': 1 }[claim.type] || 0;
+                if (priority > highestPriority) {
+                    highestPriority = priority;
+                    owner = k.id;
+                }
+            }
+        }
+
+        // Jika tiada tuntutan, semak historical (fallback)
+        if (!owner && prov.historical) {
+            const hist = prov.historical.find(h => year >= h.start && year <= h.end);
+            if (hist) owner = hist.ownerId;
+        }
+
+        return owner || 'bebas';
     }
-    if (provinceId === 'melaka') {
-        if (year >= 1402) return 'melaka_sultanate'; // belum wujud dalam julat ini
-        return 'bebas';
+
+    getActiveKingdoms(year) {
+        return this.kingdoms.filter(k => year >= k.appear && year <= k.disappear);
     }
-    // Lain-lain dianggap bebas
-    return 'bebas';
+
+    getKingdomProvinces(kingdomId, year) {
+        const kingdom = this.kingdoms.find(k => k.id === kingdomId);
+        if (!kingdom) return [];
+        const result = [];
+        for (const p of this.provinces) {
+            if (this.getOwner(p.id, year) === kingdomId) {
+                result.push(p.id);
+            }
+        }
+        return result;
+    }
+
+    isCoreProvince(provinceId, kingdomId, year) {
+        const kingdom = this.kingdoms.find(k => k.id === kingdomId);
+        if (!kingdom) return false;
+        const claim = kingdom.claims?.find(c => c.provinceId === provinceId);
+        return claim && claim.type === 'core' && year >= kingdom.appear && year <= kingdom.disappear;
+    }
+
+    // Untuk mendapatkan semua data kerajaan + pemain (digabung)
+    getAllKingdoms(playerKingdom) {
+        if (!playerKingdom) return this.kingdoms;
+        const filtered = this.kingdoms.filter(k => k.id !== playerKingdom.id);
+        return [...filtered, playerKingdom];
+    }
 }
 
 // ============================================================
-// 2. ENJIN PETA (Map Engine)
+// 3. PENGURUS KERAJAAN (KingdomManager)
+// ============================================================
+class KingdomManager {
+    constructor(timeMachine) {
+        this.timeMachine = timeMachine;
+        this.playerKingdom = null;
+        this.originalOwners = {};
+    }
+
+    createKingdom(name, provinceIds, year, culture, color = '#FF4500') {
+        const ownerChanges = {};
+        provinceIds.forEach(pid => {
+            const oldOwner = this.timeMachine.getOwner(pid, year);
+            ownerChanges[pid] = oldOwner;
+        });
+
+        const id = `player_${Date.now()}`;
+        const newKingdom = {
+            id: id,
+            name: name,
+            color: color,
+            appear: year,
+            disappear: 9999,
+            culture: culture || 'Melayu',
+            isPlayer: true,
+            claims: provinceIds.map(pid => ({
+                provinceId: pid,
+                type: 'core'
+            })),
+            treasury: 1000 + provinceIds.length * 200,
+            army: provinceIds.length * 500,
+            navy: Math.floor(provinceIds.length * 0.3) * 100,
+            stability: 60,
+            technology: { military: 1, civil: 1, naval: 1 }
+        };
+
+        this.playerKingdom = newKingdom;
+        this.originalOwners = ownerChanges;
+
+        const affectedKingdoms = new Set();
+        for (const pid of provinceIds) {
+            const oldOwner = ownerChanges[pid];
+            if (oldOwner && oldOwner !== 'bebas') {
+                affectedKingdoms.add(oldOwner);
+            }
+        }
+
+        return {
+            kingdom: newKingdom,
+            affectedKingdoms: Array.from(affectedKingdoms),
+            originalOwners: ownerChanges
+        };
+    }
+
+    mergeWithWorldData() {
+        return this.timeMachine.getAllKingdoms(this.playerKingdom);
+    }
+
+    checkHistoricalBreak(provinceId, year) {
+        const expectedOwner = this.timeMachine.getOwner(provinceId, year);
+        const actualOwner = this.playerKingdom ? this.playerKingdom.id : null;
+        if (expectedOwner && actualOwner && expectedOwner !== actualOwner) {
+            const lostKingdom = this.timeMachine.kingdoms.find(k => k.id === expectedOwner);
+            if (lostKingdom) {
+                return {
+                    broken: true,
+                    lostKingdom: lostKingdom.name,
+                    province: provinceId,
+                    message: `Sejarah terpesong! ${lostKingdom.name} kehilangan ${provinceId}.`
+                };
+            }
+        }
+        return { broken: false };
+    }
+}
+
+// ============================================================
+// 4. INISIALISASI & RENDER PETA
 // ============================================================
 const canvas = document.getElementById('mapCanvas');
 const ctx = canvas.getContext('2d');
 
-// Koordinat wilayah (poligon ringkas - bulatan untuk prototaip)
-function drawProvinces(year, selectedIds = []) {
+// Wujudkan enjin
+const timeMachine = new TimeMachine(EXPANDED_KINGDOM_DATA, EXPANDED_PROVINCE_DATA);
+const kingdomManager = new KingdomManager(timeMachine);
+
+// State UI
+let currentYear = 1211;
+let selectedProvinces = [];
+let currentMode = 'view'; // 'view' atau 'create'
+let hoveredProvince = null;
+
+// Elemen DOM
+const yearSlider = document.getElementById('yearSlider');
+const yearDisplay = document.getElementById('yearDisplay');
+const provName = document.getElementById('provName');
+const ownerName = document.getElementById('ownerName');
+const cultureName = document.getElementById('cultureName');
+const provStatus = document.getElementById('provStatus');
+const provinceList = document.getElementById('provinceList');
+const selectedCount = document.getElementById('selectedCount');
+const modeIndicator = document.getElementById('modeIndicator');
+const createStatus = document.getElementById('createStatus');
+
+// Fungsi dapatkan semua kerajaan (termasuk pemain)
+function getAllKingdoms() {
+    return kingdomManager.mergeWithWorldData();
+}
+
+// Fungsi dapatkan pemilik (gunakan enjin masa + pemain)
+function getOwnerForYear(provinceId, year) {
+    // Semak jika pemain memiliki wilayah ini
+    if (kingdomManager.playerKingdom) {
+        const claim = kingdomManager.playerKingdom.claims.find(c => c.provinceId === provinceId);
+        if (claim && year >= kingdomManager.playerKingdom.appear) {
+            return kingdomManager.playerKingdom.id;
+        }
+    }
+    return timeMachine.getOwner(provinceId, year);
+}
+
+// Fungsi lukis peta
+function drawMap() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Lukis latar belakang (laut)
+    // Laut
     ctx.fillStyle = '#1a5276';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Lukis daratan (elips ringkas)
+    // Daratan (bentuk asas)
     ctx.fillStyle = '#2d6a4f';
     ctx.beginPath();
-    ctx.ellipse(360, 300, 280, 200, 0, 0, Math.PI*2);
+    ctx.ellipse(370, 310, 290, 210, 0, 0, Math.PI*2);
     ctx.fill();
     ctx.fillStyle = '#40916c';
     ctx.beginPath();
-    ctx.ellipse(380, 280, 220, 160, 0, 0, Math.PI*2);
+    ctx.ellipse(390, 290, 230, 170, 0, 0, Math.PI*2);
     ctx.fill();
 
-    // Lukis setiap wilayah sebagai bulatan
-    PROVINCE_DATA.forEach(p => {
-        const ownerId = getOwnerForYear(p.id, year);
-        const kingdom = KINGDOM_DATA.find(k => k.id === ownerId);
-        const isSelected = selectedIds.includes(p.id);
+    const allKingdoms = getAllKingdoms();
+    const allProvs = EXPANDED_PROVINCE_DATA;
+
+    // Lukis setiap wilayah
+    allProvs.forEach(p => {
+        const ownerId = getOwnerForYear(p.id, currentYear);
+        const kingdom = allKingdoms.find(k => k.id === ownerId);
+        const isSelected = selectedProvinces.includes(p.id);
+        const isHover = hoveredProvince === p.id;
         
-        // Warna berdasarkan pemilik
         let color = '#8a9ba8'; // bebas
         if (kingdom) color = kingdom.color;
         else if (ownerId === 'bebas') color = '#8a9ba8';
         else color = '#555555';
-        
-        // Jika terseleksi
+
+        // Efek pilihan
         if (isSelected) {
             ctx.shadowColor = '#f5c842';
-            ctx.shadowBlur = 20;
+            ctx.shadowBlur = 25;
+        } else if (isHover) {
+            ctx.shadowColor = '#ffffff';
+            ctx.shadowBlur = 15;
         } else {
             ctx.shadowBlur = 0;
         }
 
         // Bulatan
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 32, 0, Math.PI*2);
+        ctx.arc(p.x, p.y, 30, 0, Math.PI*2);
         ctx.fillStyle = color;
         ctx.fill();
-        ctx.strokeStyle = isSelected ? '#f5c842' : '#1a1a2e';
-        ctx.lineWidth = isSelected ? 4 : 1.5;
+        ctx.strokeStyle = isSelected ? '#f5c842' : (isHover ? '#fff' : '#1a1a2e');
+        ctx.lineWidth = isSelected ? 4 : (isHover ? 2.5 : 1.5);
         ctx.stroke();
-        
+
         // Label
         ctx.shadowBlur = 0;
-        ctx.font = 'bold 11px "Segoe UI"';
+        ctx.font = 'bold 10px "Segoe UI"';
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(p.name, p.x, p.y - 4);
         
         // Ikon kecil
-        ctx.font = '10px sans-serif';
+        ctx.font = '9px sans-serif';
         ctx.fillStyle = '#ddd';
-        ctx.fillText('🏰', p.x + 30, p.y - 12);
+        ctx.fillText('🏰', p.x + 28, p.y - 12);
     });
-    
-    // Kembalikan shadow
+
+    // Reset
     ctx.shadowBlur = 0;
-}
-
-// ============================================================
-// 3. PENGURUSAN MASA & INTERAKSI
-// ============================================================
-let currentYear = 1211;
-let selectedProvinces = [];
-let currentMode = 'view'; // 'view' atau 'create'
-
-const yearSlider = document.getElementById('yearSlider');
-const yearDisplay = document.getElementById('yearDisplay');
-const infoBox = document.getElementById('infoBox');
-const provName = document.getElementById('provName');
-const ownerName = document.getElementById('ownerName');
-const cultureName = document.getElementById('cultureName');
-const provinceList = document.getElementById('provinceList');
-const modeIndicator = document.getElementById('modeIndicator');
-
-// Kemaskini peta
-function updateMap() {
-    drawProvinces(currentYear, selectedProvinces);
-    yearDisplay.textContent = currentYear;
-    updateInfoPanel(null);
-    updateProvinceList();
 }
 
 // Kemaskini panel maklumat
@@ -216,31 +581,63 @@ function updateInfoPanel(provinceId) {
         provName.textContent = 'Klik wilayah untuk lihat';
         ownerName.textContent = '-';
         cultureName.textContent = '-';
+        provStatus.textContent = 'Biasa';
         return;
     }
-    const prov = PROVINCE_DATA.find(p => p.id === provinceId);
+    const prov = EXPANDED_PROVINCE_DATA.find(p => p.id === provinceId);
     if (!prov) return;
     const ownerId = getOwnerForYear(prov.id, currentYear);
-    const kingdom = KINGDOM_DATA.find(k => k.id === ownerId);
+    const allKingdoms = getAllKingdoms();
+    const kingdom = allKingdoms.find(k => k.id === ownerId);
     provName.textContent = prov.name;
     ownerName.textContent = kingdom ? kingdom.name : 'Bebas';
     cultureName.textContent = prov.culture || 'Tidak diketahui';
+    
+    // Status
+    const isCore = timeMachine.isCoreProvince(prov.id, ownerId, currentYear);
+    if (kingdom && kingdom.isPlayer) {
+        provStatus.textContent = '🏴‍☠️ Wilayah Anda (Inti)';
+    } else if (isCore) {
+        provStatus.textContent = '⭐ Wilayah Inti';
+    } else if (ownerId !== 'bebas' && ownerId !== null) {
+        provStatus.textContent = '🔗 Wilayah Naungan / Tuntutan';
+    } else {
+        provStatus.textContent = '🌿 Bebas';
+    }
 }
 
 // Kemaskini senarai wilayah dipilih
-function updateProvinceList() {
+function updateProvinceListUI() {
+    selectedCount.textContent = selectedProvinces.length;
     if (selectedProvinces.length === 0) {
         provinceList.innerHTML = '<span style="color:#888;">Tiada wilayah dipilih</span>';
+        createStatus.textContent = '';
         return;
     }
     const names = selectedProvinces.map(id => {
-        const p = PROVINCE_DATA.find(d => d.id === id);
+        const p = EXPANDED_PROVINCE_DATA.find(d => d.id === id);
         return p ? p.name : id;
     });
     provinceList.innerHTML = names.map(n => `<span>${n}</span>`).join('');
 }
 
-// Interaksi klik pada canvas
+// Kemaskini semua
+function updateAll() {
+    drawMap();
+    yearDisplay.textContent = currentYear;
+    if (currentMode === 'view') {
+        modeIndicator.textContent = 'Mod: Lihat Peta';
+    } else {
+        modeIndicator.textContent = `Mod: Cipta Kerajaan (${selectedProvinces.length}/8)`;
+    }
+    updateProvinceListUI();
+}
+
+// ============================================================
+// 5. INTERAKSI PENGGUNA
+// ============================================================
+
+// Klik pada canvas
 canvas.addEventListener('click', (e) => {
     const rect = canvas.getBoundingClientRect();
     const scaleX = canvas.width / rect.width;
@@ -248,12 +645,11 @@ canvas.addEventListener('click', (e) => {
     const mouseX = (e.clientX - rect.left) * scaleX;
     const mouseY = (e.clientY - rect.top) * scaleY;
     
-    // Cari wilayah terdekat (jarak < 40px)
     let found = null;
-    for (const p of PROVINCE_DATA) {
+    for (const p of EXPANDED_PROVINCE_DATA) {
         const dx = mouseX - p.x;
         const dy = mouseY - p.y;
-        if (Math.sqrt(dx*dx + dy*dy) < 40) {
+        if (Math.sqrt(dx*dx + dy*dy) < 35) {
             found = p;
             break;
         }
@@ -265,80 +661,150 @@ canvas.addEventListener('click', (e) => {
     }
     
     if (currentMode === 'view') {
-        // Mod lihat: tunjuk maklumat
         updateInfoPanel(found.id);
     } else if (currentMode === 'create') {
-        // Mod cipta: toggle pemilihan
         const idx = selectedProvinces.indexOf(found.id);
         if (idx > -1) {
             selectedProvinces.splice(idx, 1);
         } else {
-            if (selectedProvinces.length < 8) { // had 8 wilayah
+            if (selectedProvinces.length < 8) {
                 selectedProvinces.push(found.id);
             } else {
-                alert('Had maksimum 8 wilayah untuk kerajaan baru (era awal).');
+                createStatus.textContent = '⚠️ Had 8 wilayah! Kosongkan dahulu.';
+                setTimeout(() => createStatus.textContent = '', 2000);
+                return;
             }
         }
-        updateMap();
-        updateProvinceList();
+        updateAll();
         updateInfoPanel(found.id);
+        createStatus.textContent = `✅ ${found.name} ${selectedProvinces.includes(found.id) ? 'ditambah' : 'dibuang'}.`;
+        setTimeout(() => createStatus.textContent = '', 1500);
     }
 });
 
-// ============================================================
-// 4. KAWALAN UI
-// ============================================================
-yearSlider.addEventListener('input', (e) => {
-    currentYear = parseInt(e.target.value);
-    updateMap();
+// Hover untuk feedback
+canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const mouseX = (e.clientX - rect.left) * scaleX;
+    const mouseY = (e.clientY - rect.top) * scaleY;
+    
+    let found = null;
+    for (const p of EXPANDED_PROVINCE_DATA) {
+        const dx = mouseX - p.x;
+        const dy = mouseY - p.y;
+        if (Math.sqrt(dx*dx + dy*dy) < 35) {
+            found = p;
+            break;
+        }
+    }
+    if (found !== hoveredProvince) {
+        hoveredProvince = found ? found.id : null;
+        drawMap();
+    }
 });
 
+// Gelangsar tahun
+yearSlider.addEventListener('input', (e) => {
+    currentYear = parseInt(e.target.value);
+    // Jika mod cipta, kosongkan pilihan kerana tahun berubah
+    if (currentMode === 'create') {
+        selectedProvinces = [];
+        createStatus.textContent = '🔄 Tahun berubah, pilihan dikosongkan.';
+        setTimeout(() => createStatus.textContent = '', 1500);
+    }
+    updateAll();
+    updateInfoPanel(null);
+});
+
+// Tukar ke mod Lihat
 document.getElementById('btnView').addEventListener('click', () => {
     currentMode = 'view';
     selectedProvinces = [];
-    modeIndicator.textContent = 'Mod: Lihat Peta';
-    document.getElementById('btnView').classList.add('btn');
     document.getElementById('btnView').classList.remove('secondary');
-    document.getElementById('btnCreate').classList.add('secondary');
+    document.getElementById('btnView').classList.add('btn');
     document.getElementById('btnCreate').classList.remove('btn');
-    updateMap();
-    updateProvinceList();
+    document.getElementById('btnCreate').classList.add('secondary');
+    updateAll();
+    updateInfoPanel(null);
+    createStatus.textContent = 'Mod Lihat Peta.';
+    setTimeout(() => createStatus.textContent = '', 1000);
 });
 
+// Tukar ke mod Cipta
 document.getElementById('btnCreate').addEventListener('click', () => {
     currentMode = 'create';
     selectedProvinces = [];
-    modeIndicator.textContent = 'Mod: Cipta Kerajaan (klik wilayah)';
-    document.getElementById('btnCreate').classList.add('btn');
     document.getElementById('btnCreate').classList.remove('secondary');
-    document.getElementById('btnView').classList.add('secondary');
+    document.getElementById('btnCreate').classList.add('btn');
     document.getElementById('btnView').classList.remove('btn');
-    updateMap();
-    updateProvinceList();
-    alert('Klik pada wilayah untuk tambah ke kerajaan baru. Had 8 wilayah.');
+    document.getElementById('btnView').classList.add('secondary');
+    updateAll();
+    updateInfoPanel(null);
+    createStatus.textContent = '🖱️ Klik wilayah untuk pilih (maks 8).';
+    setTimeout(() => createStatus.textContent = '', 2000);
 });
 
+// Kosongkan pilihan
 document.getElementById('btnClearSelection').addEventListener('click', () => {
     selectedProvinces = [];
-    updateMap();
-    updateProvinceList();
+    updateAll();
+    updateInfoPanel(null);
+    createStatus.textContent = '🧹 Pilihan dikosongkan.';
+    setTimeout(() => createStatus.textContent = '', 1000);
+});
+
+// SAHKAN CIPTAAN
+document.getElementById('btnConfirmCreate').addEventListener('click', () => {
+    if (selectedProvinces.length < 3) {
+        createStatus.textContent = '⚠️ Minimum 3 wilayah untuk cipta kerajaan!';
+        setTimeout(() => createStatus.textContent = '', 2000);
+        return;
+    }
+    const name = prompt('Masukkan nama kerajaan anda:', 'Kerajaan Baru');
+    if (!name || name.trim() === '') return;
+    
+    // Pilihan warna (pilihan rawak atau custom)
+    const color = prompt('Masukkan warna (hex, contoh #FF5733):', '#FF4500');
+    const validColor = /^#[0-9A-Fa-f]{6}$/.test(color) ? color : '#FF4500';
+    
+    const result = kingdomManager.createKingdom(
+        name.trim(),
+        selectedProvinces,
+        currentYear,
+        'Melayu',
+        validColor
+    );
+    
+    // Paparan hasil
+    let msg = `✅ Kerajaan "${name}" berjaya dicipta pada tahun ${currentYear} dengan ${selectedProvinces.length} wilayah!`;
+    if (result.affectedKingdoms.length > 0) {
+        const names = result.affectedKingdoms.map(id => {
+            const k = EXPANDED_KINGDOM_DATA.find(d => d.id === id);
+            return k ? k.name : id;
+        });
+        msg += `\n⚠️ Kerajaan terjejas: ${names.join(', ')}. Hubungan diplomatik bermula sebagai 'Suspicious'.`;
+    }
+    alert(msg);
+    createStatus.textContent = `🎉 ${name} muncul!`;
+    
+    // Kemaskini peta dan UI
+    selectedProvinces = [];
+    updateAll();
+    updateInfoPanel(null);
 });
 
 // ============================================================
-// 5. INISIALISASI
+// 6. INISIALISASI AWAL
 // ============================================================
-updateMap();
-updateProvinceList();
-console.log('🌏 NUSANTARA: Prototaip berjaya dimuat!');
+updateAll();
+updateInfoPanel(null);
+console.log('🌏 NUSANTARA: Prototaip Lengkap sedia!');
 console.log('📅 Tahun semasa:', currentYear);
 console.log('🎮 Mod:', currentMode);
+console.log('🏛️ Bilangan kerajaan aktif:', timeMachine.getActiveKingdoms(currentYear).length);
 </script>
-    
-<script>
-<script src="dataExpansion.js"></script>
-<script src="timeMachine.js"></script>
-<script src="kingdomManager.js"></script>
-</script>
-    
+
 </body>
 </html>
